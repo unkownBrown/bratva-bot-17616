@@ -1,4 +1,4 @@
-require('dotenv').config({ quiet: true });
+if (!process.env.BRV_EMBEDDED) require('dotenv').config({ quiet: true });
 const fs = require('node:fs');
 const http = require('node:http');
 const { exec } = require('node:child_process');
@@ -26,11 +26,10 @@ const { setupGuild, startSchedules, syncSoon } = require('./src/guild');
 // jadi bot tidak boleh memanggil process.exit sendiri atau membuka port sendiri.
 const EMBEDDED = Boolean(process.env.BRV_EMBEDDED);
 
-function makeClient({ members: withMembers, content, presence }) {
+function makeClient({ members: withMembers, content }) {
   const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildInvites];
   if (withMembers) intents.push(GatewayIntentBits.GuildMembers);
   if (content) intents.push(GatewayIntentBits.MessageContent);
-  if (presence) intents.push(GatewayIntentBits.GuildPresences); // daftar anggota online / lagi main di dashboard web
   return new Client({
     intents,
     makeCache: Options.cacheWithLimits({ ...Options.DefaultMakeCacheSettings, MessageManager: 0, ThreadManager: 0, ReactionManager: 0 }),
@@ -88,7 +87,6 @@ function wire(client) {
 // Intent istimewa (Members, Message Content) harus dinyalakan di Developer Portal. Kalau belum,
 // bot mencoba tanpa intent itu supaya tetap online (take role dan panel tetap jalan), dan memberi tahu fitur mana yang mati.
 const ATTEMPTS = [
-  ...(process.env.BRV_PRESENCE === '0' ? [] : [{ members: true, content: true, presence: true }]), // isi BRV_PRESENCE=0 kalau tidak mau Presence Intent
   { members: true, content: true }, { members: true, content: false },
   { members: false, content: true }, { members: false, content: false },
 ];
@@ -129,14 +127,12 @@ async function start({ onRestart } = {}) {
   for (const attempt of ATTEMPTS) {
     runtime.features.members = attempt.members;
     runtime.features.content = attempt.content;
-    runtime.features.presence = Boolean(attempt.presence);
     client = makeClient(attempt);
     wire(client);
     try {
       await client.login(process.env.DISCORD_TOKEN);
       if (!attempt.members) console.warn('\nServer Members Intent belum dinyalakan: log join/leave, roster, dan aktivitas mati.');
       if (!attempt.content) console.warn('Message Content Intent belum dinyalakan: aturan auto-moderasi yang membaca isi pesan (undangan, link, kata, kapital) mati.');
-      if (!attempt.presence && process.env.BRV_PRESENCE !== '0') console.warn('Presence Intent belum dinyalakan: daftar anggota online dan lagi main di dashboard web mati (daftar voice tetap jalan).');
       if (!attempt.members || !attempt.content) console.warn('Nyalakan di Developer Portal (tab Bot, bagian Privileged Gateway Intents) lalu restart bot.\n');
       return;
     } catch (err) {
@@ -188,9 +184,7 @@ async function stop(label = 'Berhenti') {
 
 const ready = () => Boolean(client?.isReady?.());
 
-const getClient = () => client;
-
-module.exports = { start, stop, ready, getClient };
+module.exports = { start, stop, ready };
 
 // Dijalankan langsung (node index.js, start.bat, systemd, Docker): bot mengurus sinyal dan kode keluarnya sendiri.
 if (require.main === module) {
