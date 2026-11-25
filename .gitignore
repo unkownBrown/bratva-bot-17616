@@ -1,0 +1,16 @@
+node_modules
+.env
+data/state.json
+data/members.json
+data/content.bak.json
+data/bin
+data/musik.json
+data/cookies.txt
+data/moderasi.json
+data/komunitas.json
+data/bursa.json
+data/game.json
+node_modules
+.env
+data
+.netlify

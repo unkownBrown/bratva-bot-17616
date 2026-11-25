@@ -1,0 +1,50 @@
+CARA UPDATE (tanpa install ulang)
+
+Data kamu tidak ikut tertimpa: teks panel, pengaturan, gambar, data anggota, dan token tetap ada.
+
+A. Lewat Discord (paling gampang, setelah update pertama ke versi ini):
+  /panel -> Status bot -> Update bot -> upload zip update. Khusus pemilik server.
+  Bot memeriksa, menimpa kode, dan restart sendiri. Salah update? Klik Kembalikan versi sebelumnya.
+
+B. Lewat update.bat (Windows). Pakai ini untuk update pertama ke versi ini, atau kalau bot sedang mati:
+  1. Matikan bot (tutup jendelanya).
+  2. Klik dua kali update.bat di folder bot.
+  3. Seret file zip update ke jendela yang muncul, tekan Enter.
+  4. Klik start.bat.
+
+Cara manual: ekstrak zip update ke folder bot yang lama, pilih "Replace / timpa file yang ada", lalu klik start.bat.
+Folder "data" dan file ".env" tidak ada di zip update, jadi aman.
+
+Di hosting / server Linux: upload isi zip update menimpa file lama (jangan hapus folder data dan .env),
+lalu restart bot. Di server dengan layanan: sudo systemctl restart brv-panel-bot
+
+Setelah update, buka menu bot dan cek Pengaturan. Fitur baru mati sampai kamu nyalakan.
+
+Versi 2.1 menambah musik (YouTube / Spotify + lirik berjalan) dan butuh paket baru. Boleh lewat Discord (/panel -> Status bot -> Update bot,
+bot menjalankan npm install sendiri, bisa memakan 1 sampai 3 menit) atau lewat update.bat.
+Setelah itu: /panel -> Pengaturan -> nyalakan Musik, lalu ketik /musik cek. Node.js 20 ke atas disarankan (22 paling aman).
+
+Versi 2.2 menambah moderasi (peringatan lewat DM, timeout / kick / ban, auto-moderasi) dan fitur komunitas (poll, giveaway, pengingat, AFK, sambutan, info, umumkan).
+Dari versi 2.1 ke 2.2 tidak ada paket baru, jadi update lewat Discord (/panel -> Status bot -> Update bot) langsung jalan tanpa npm install.
+Setelah update, buka /panel -> Fitur lainnya dan nyalakan yang kamu mau. Untuk peringatan: nyalakan Moderasi, buat channel logs-moderasi (atau hubungkan di halaman itu),
+lalu klik kanan nama member -> Apps -> Beri peringatan. Nyalakan Server Members Intent kalau mau pakai Sambutan.
+
+Versi 2.3 menambah Bursa harga Disnaker (daftar harga, catat penjualan, total penghasilan otomatis, rekap mingguan) dan mencabut log pesan:
+yang tersisa cuma log orang masuk dan keluar voice. Tidak ada paket baru, jadi update lewat Discord (/panel -> Status bot -> Update bot) langsung jalan.
+Setelah update: /panel -> Bursa harga -> nyalakan Bursa harga. Daftar harga sudah terisi; harga baru tinggal ditempel lewat tombol Perbarui harga.
+Mau rekap mingguan dan log penjualan masuk ke channel: buat channel logs-bursa (atau hubungkan di halaman Bursa harga).
+Log voice memakai channel logs-pesan seperti sebelumnya.
+
+Versi 2.4 menambah Level (XP dari chat dan voice, naik level, hadiah role) dan Game (koin, slot, dadu, lempar koin, suit, XO, kuis, blackjack).
+Tidak ada paket baru, jadi update lewat Discord (/panel -> Status bot -> Update bot) langsung jalan.
+Setelah update: /panel -> Game & level -> nyalakan Level dan/atau Game. Command-nya (/rank, /top, /slot, /xo, /kuis, dll) baru muncul di Discord setelah dinyalakan.
+Mau pengumuman naik level: buat channel level-up (atau hubungkan di halaman Game & level). Hadiah role: /atur-game hadiah. Daftar game: /game.
+
+Versi 2.5 menambah Log share screen dan paket Netlify.
+Log share screen: bot menulis di channel video-recorder kalau ada yang mulai dan selesai share screen di voice (siapa, di mana, berapa lama).
+Bot Discord tidak bisa merekam video share screen, jadi yang dicatat cuma kejadiannya. Nyalakan di /panel -> Pengaturan -> Log share screen.
+Paket Netlify (folder netlify, netlify.toml, NETLIFY.md) cuma dipakai kalau bot dijalankan di Netlify. Di PC atau VPS biasa tidak berpengaruh apa-apa.
+Tidak ada paket wajib baru, jadi update lewat Discord (/panel -> Status bot -> Update bot) langsung jalan.
+
+Versi 2.5.1: di Netlify, channel cadangan sudah terpasang dan Backup menyala sendiri. Kalau pemulihan data gagal waktu bot baru nyala, cadangan baru ditahan
+supaya cadangan lama tidak tertimpa data kosong (berlaku di semua hosting yang filenya bisa reset).

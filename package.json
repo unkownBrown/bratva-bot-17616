@@ -1,0 +1,25 @@
+{
+  "name": "brv-panel-bot",
+  "version": "2.5.1",
+  "private": true,
+  "description": "Bot server Discord: panel channel, log, take role, formulir, musik (YouTube / Spotify + lirik berjalan), moderasi (peringatan lewat DM), dan fitur komunitas, log share screen",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@discordjs/voice": "^0.19.0",
+    "@snazzah/davey": "^0.1.0",
+    "adm-zip": "^0.6.1",
+    "discord.js": "^14.27.0",
+    "dotenv": "^18.0.8",
+    "libsodium-wrappers": "^0.7.13"
+  },
+  "optionalDependencies": {
+    "ffmpeg-static": "^5.2.0",
+    "@netlify/server": "*"
+  }
+}

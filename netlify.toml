@@ -1,0 +1,8 @@
+# Bot Bratva di Netlify Server (Early Access). Panduan: NETLIFY.md
+[build]
+  # Folder berisi hanya robots.txt. Tanpa ini Netlify menerbitkan seluruh folder proyek (kode bot) sebagai berkas web.
+  publish = "netlify/publik"
+
+[build.environment]
+  # Netlify Server butuh Node 24 ke atas
+  NODE_VERSION = "24"
