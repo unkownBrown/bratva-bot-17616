@@ -107,13 +107,16 @@ exit /b
 
 rem ================= UPLOAD BIASA (tiap kali ada perubahan) =================
 :push
-echo  Mengunggah perubahan...
+echo  Mengunggah perubahan dan memulai deploy baru...
 git add -A
-git commit -m "update %date% %time%" >nul 2>nul
+git commit --allow-empty -m "deploy %date% %time%" >nul 2>nul
 git push
 if errorlevel 1 goto pushfail
 echo.
-echo  Terkirim. Netlify membangun otomatis (1 sampai 3 menit), bot menyala lagi sendiri.
+echo  Terkirim. Netlify sedang membangun, tunggu sekitar 2 menit.
+echo  Situs akan terbuka sendiri. Kalau tulisannya belum "nyala", muat ulang beberapa kali.
+timeout /t 120 /nobreak >nul
+call %NL% open:site
 pause
 exit /b
 
